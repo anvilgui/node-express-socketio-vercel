@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link>
+    <h1>System in time-real</h1>
+    
+    <input type="text" name="username" id="username" placeholder="Digite seu nick">
+    <input type="button" value="Enviar" id="enviar2"><br>
+    <input type="text" name="" id="mensagem" placeholder="Digite sua mensagem">
+    <input type="button" value="Enviar" id="enviar">
+    <p id="chat">Mensagens:</p>
+
+    <script src="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="></script>
+    <script src="sha512-VJ6+sp2E5rFQk05caiXXzQd1wBABpjEj1r5kMiLmGAAgwPItw1YpqsCCBtq8Yr1x6C49/mTpRdXtq8O2RcZhlQ=="></script>
+    <link rel="stylesheet" href="styles.css">
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        var botao = document.getElementById('enviar');
+        var mensagem = document.getElementById('mensagem');
+
+        //emitindo evento do front
+        botao.addEventListener('click', function(e) {
+            e.preventDefault();
+            if(mensagem.value){
+                socket.emit('chat message', mensagem.value);
+                mensagem.value = '';
+            }
+        });
+
+        //escutando evento no front
+        socket.on('chat message', function(msg) {
+            var chat = document.getElementById('chat').innerHTML;
+            chat += `<p>${msg}</p>`;
+            document.getElementById('chat').innerHTML = chat;           
+        });
+
+    </script>
+</body>
+</html>
